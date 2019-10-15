@@ -170,7 +170,7 @@ Function Process-FilterCollection {
 }
     
 $com = New-Object -ComObject WScript.Network
-$installedPrinterDrivers = get-printerdriver
+$installedPrinterDrivers = Get-PrinterDriver
     
 #Get-Content "\\$Domain\sysvol\$Domain\Policies\{$GPOGuid}\User\Preferences\Printers\Printers.xml"
     
@@ -180,7 +180,7 @@ foreach ($sharedPrinter in $printersXml.Printers.SharedPrinter) {
     
     if ($filterResult -eq $true) {
         if ($sharedPrinter.Properties.action -eq 'U') {
-            #check to see if the driver is present on the XenAppServer
+            #check to see if the driver is present on the Server
             
             $printServer = $sharedPrinter.Properties.path
             $printServer = $printServer.Split("\\")[2]
