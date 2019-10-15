@@ -32,7 +32,7 @@
 
 #>
 # variabels
-$GPOGuid = {E64E05A0-8ED7-42A4-98C4-F0447C280EEA}
+$GPOGuid = E64E05A0-8ED7-42A4-98C4-F0447C280EEA
 $Domain = CARITAS.local
 $LogDir="\\FIL02.caritas.local\PrinterLog$"
 $LogPath="$($LogDir)\$($env:USERNAME)_$($env:COMPUTERNAME)_PrinterScript.log"
