@@ -1,0 +1,1 @@
+Get-ChildItem 'C:\Program Files\Microsoft\Exchange Server\V15\Logging','C:\Inetpub\Logs' -Directory | Get-ChildItem -Include '*.log','*.blg' -Recurse | ? LastWriteTime -lt (Get-Date).AddDays(-30) | Remove-Item
