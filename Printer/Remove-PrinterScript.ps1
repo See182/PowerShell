@@ -14,10 +14,10 @@
 #--------------------------------------------------------------------------------- 
 
 #requires -Version 2.0
-Function Delete-OSCNetworkPrinters
+Function Remove-OSCNetworkPrinters
 {
 	$NetworkPrinters = Get-WmiObject -Class Win32_Printer | Where-Object{$_.Network}
-	If ($NetworkPrinters -ne $null)
+	If ($null -ne $NetworkPrinters)
 	{
 		Try
 		{
@@ -38,4 +38,4 @@ Function Delete-OSCNetworkPrinters
 	}
 }
 
-Delete-OSCNetworkPrinters
+Remove-OSCNetworkPrinters

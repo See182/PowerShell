@@ -31,7 +31,7 @@
     The GPO Feature needs to be installed on the server.
 
 #>
-# variabels
+# Variabels
 $GPOGuid = "E64E05A0-8ED7-42A4-98C4-F0447C280EEA"
 $Domain = "CARITAS.local"
 $LogDir="\\FIL02.caritas.local\PrinterLog$"
@@ -39,31 +39,24 @@ $LogPath="$($LogDir)\$($env:USERNAME)_$($env:COMPUTERNAME)_PrinterScript.log"
 
 write-host "Writing logs to $($LogPath)"   
 <#
-    Check to see if the log directory exists and create it it doesn't yet exist.
-    $LogPathExist=false
-    Is the H drive already mapped
+    Check to see if the log directory exists.
 #>
     $LogPathExist=Test-Path $LogDir
     if ($logPathExist) {
         write-host "$($LogDir) Exists"
     } else {
         write-host "$($LogDir) Does not exist"
-        #create directory for for logfile
-        mkdir $LogDir
+        #create directory for for logfile only use when the LogDir is on a local drive
+        #mkdir $LogDir
     }
     
-<#
-    Is the folder created
-    create the folder if its not already there
-#>
-  
 Start-Transcript -Path $LogPath
     
 [xml]$printersXml = Get-Content "\\$Domain\sysvol\$Domain\Policies\{$GPOGuid}\User\Preferences\Printers\Printers.xml" 
 $userGroups = ([Security.Principal.WindowsIdentity]"$($env:USERNAME)").Groups.Translate([System.Security.Principal.NTAccount])
 $computerGroups = ([Security.Principal.WindowsIdentity]"$($env:COMPUTERNAME)").Groups.Translate([System.Security.Principal.NTAccount])
 
-Function Process-FilterComputer {
+Function Get-FilterComputer {
     Param(
         $filter
     )
@@ -84,7 +77,7 @@ Function Process-FilterComputer {
     }
 }
     
-Function Process-FilterUser {
+Function Get-FilterUser {
     Param(
         $filter
     )
@@ -103,7 +96,7 @@ Function Process-FilterUser {
     }
 }
     
-Function Process-FilterGroup {
+Function Get-FilterGroup {
     Param(
         $filter
     )
@@ -128,7 +121,7 @@ Function Process-FilterGroup {
     }
 }
     
-Function Process-FilterCollection {
+Function Get-FilterCollection {
     Param(
         $filter
     )
@@ -137,16 +130,16 @@ Function Process-FilterCollection {
         $result = $true
         $childFilter = $filter.FirstChild
     
-        while ($childFilter -ne $null) {
+        while ($null -ne $childFilter) {
             if (($childFilter.bool -eq "OR") -or ($childFilter.bool -eq "AND" -and $result -eq $true)) {
                 if ($childFilter.LocalName -eq "FilterComputer") {                    
-                    $result = Process-FilterComputer $childFilter
+                    $result = Get-FilterComputer $childFilter
                 } elseif ($childFilter.LocalName -eq "FilterUser") {
-                    $result = Process-FilterUser $childFilter
+                    $result = Get-FilterUser $childFilter
                 } elseif ($childFilter.LocalName -eq "FilterGroup") {
-                    $result = Process-FilterGroup $childFilter
+                    $result = Get-FilterGroup $childFilter
                 } elseif ($childFilter.LocalName -eq "FilterCollection") {
-                    $result = Process-FilterCollection $childFilter
+                    $result = Get-FilterCollection $childFilter
                 }
     
                 #Write-Host "Process-$($childFilter.LocalName) $($childFilter.name): $($result)"
@@ -175,7 +168,7 @@ $installedPrinterDrivers = Get-PrinterDriver
 #Get-Content "\\$Domain\sysvol\$Domain\Policies\{$GPOGuid}\User\Preferences\Printers\Printers.xml"
     
 foreach ($sharedPrinter in $printersXml.Printers.SharedPrinter) {
-    $filterResult = Process-FilterCollection $sharedPrinter.Filters
+    $filterResult = Get-FilterCollection $sharedPrinter.Filters
     Write-Host "$($sharedPrinter.name) filters passed: $($filterResult)"
     
     if ($filterResult -eq $true) {
@@ -186,7 +179,7 @@ foreach ($sharedPrinter in $printersXml.Printers.SharedPrinter) {
             $printServer = $printServer.Split("\\")[2]
             $driverName = Get-Printer -ComputerName $($PrintServer) -Name $($sharedPrinter.name)
     
-            if ($installedPrinterDrivers | where {$_.name -eq $driverName.drivername}) {
+            if ($installedPrinterDrivers | Where-Object {$_.name -eq $driverName.drivername}) {
             #Create the printer in the session
                 $com.AddWindowsPrinterConnection($sharedPrinter.Properties.path)
                 "AddWindowsPrinterConnection:$($sharedPrinter.Properties.path)"
