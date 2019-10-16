@@ -5,31 +5,15 @@
     .DESCRIPTION
     This Scripts gathers the information from a GPO and connects the Printer via Powershell.
 
-    .PARAMETER FirstParameter
-    Description of each of the parameters.
-    Note:
-    To make it easier to keep the comments synchronized with changes to the parameters,
-    the preferred location for parameter documentation comments is not here,
-    but within the param block, directly above each parameter.
-
-    .PARAMETER SecondParameter
-    Description of each of the parameters.
-
-    .INPUTS
-    Description of objects that can be piped to the script.
-
-    .OUTPUTS
-    Description of objects that are output by the script.
-
     .EXAMPLE
-    Example of how to run the script.
+    Create a GPO with printers installed under User -> Policy -> Control Panel Settings -> Printer
 
     .LINK
-    Links to further documentation.
+    Script is based on script created by Preston Gallwas
+    https://www.atumvirt.com/2013/11/dramatically-reducing-logon-time-to-desktop-by-moving-from-group-policy-preferences-to-powershell-logon-script/ 
 
     .NOTES
-    The GPO Feature needs to be installed on the server.
-
+    
 #>
 
 # Variabels
