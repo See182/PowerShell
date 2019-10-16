@@ -31,31 +31,33 @@
     The GPO Feature needs to be installed on the server.
 
 #>
+
 # Variabels
 $GPOGuid = "E64E05A0-8ED7-42A4-98C4-F0447C280EEA"
 $Domain = "CARITAS.local"
 $LogDir="\\FIL02.caritas.local\PrinterLog$"
 $LogPath="$($LogDir)\$($env:USERNAME)_$($env:COMPUTERNAME)_PrinterScript.log"
 
-write-host "Writing logs to $($LogPath)"   
-<#
-    Check to see if the log directory exists.
-#>
-    $LogPathExist=Test-Path $LogDir
-    if ($logPathExist) {
-        write-host "$($LogDir) Exists"
-    } else {
-        write-host "$($LogDir) Does not exist"
-        #create directory for for logfile only use when the LogDir is on a local drive
-        #mkdir $LogDir
-    }
-    
+# Check to see if the log directory exists.
+write-host "Writing logs to $($LogPath)"
+$LogPathExist=Test-Path $LogDir
+if ($logPathExist) {
+    write-host "$($LogDir) Exists"
+} else {
+    # Changes the LogDirectory to a local Folder 
+    write-host "$($LogDir) Does not exist fallback to a local dir"
+    $LogDir="C:\PrintLog"
+    mkdir $LogDir
+}
+
+# Start logging
 Start-Transcript -Path $LogPath
-    
+# Variabels    
 [xml]$printersXml = Get-Content "\\$Domain\sysvol\$Domain\Policies\{$GPOGuid}\User\Preferences\Printers\Printers.xml" 
 $userGroups = ([Security.Principal.WindowsIdentity]"$($env:USERNAME)").Groups.Translate([System.Security.Principal.NTAccount])
 $computerGroups = ([Security.Principal.WindowsIdentity]"$($env:COMPUTERNAME)").Groups.Translate([System.Security.Principal.NTAccount])
 
+# Functions
 Function Get-FilterComputer {
     Param(
         $filter
@@ -161,7 +163,8 @@ Function Get-FilterCollection {
         return $result
     }
 }
-    
+
+# Installing Script
 $com = New-Object -ComObject WScript.Network
 $installedPrinterDrivers = Get-PrinterDriver
     
@@ -198,5 +201,6 @@ foreach ($sharedPrinter in $printersXml.Printers.SharedPrinter) {
         }
     }
 }
-    
+
+# End logging
 Stop-Transcript
