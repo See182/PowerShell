@@ -176,8 +176,11 @@ foreach ($sharedPrinter in $printersXml.Printers.SharedPrinter) {
                     "SetDefaultPrinter:$($sharedPrinter.Properties.path)"
                 }
             } else {
+            # install printer driver
+            write-host "`r`n  The driver for $($sharedPrinter.Properties.path) doesn't appear to be present.  The driver $($driverName.drivername) will be installed. `n`r"    
+            rundll32 printui.dll PrintUIEntry /in /n $sharedPrinter.Properties.path     
             #alert that the driver isn't present
-            write-host "`r`n  The driver for $($sharedPrinter.Properties.path) doesn't appear to be present.  The driver that needs to be installed is $($driverName.drivername).  Please install this driver on the Server.  `n`r"
+            #write-host "`r`n  The driver for $($sharedPrinter.Properties.path) doesn't appear to be present.  The driver that needs to be installed is $($driverName.drivername).  Please install this driver on the Server.  `n`r"
             }
         } elseif ($sharedPrinter.Properties.action -eq 'D') {
             $com.RemovePrinterConnection($sharedPrinter.Properties.path, $true, $true)
