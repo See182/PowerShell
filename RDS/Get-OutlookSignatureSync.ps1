@@ -1,4 +1,4 @@
-$Share = "\\caritas.local\data\Profil\FolderRedirection\$($env:USERNAME)"
+$Share = "\\DOMAIN\data\Profil\FolderRedirection\$($env:USERNAME)"
 $Path = "Documents\Outlook-Dateien"
 $Folder = "Signatures"
 
