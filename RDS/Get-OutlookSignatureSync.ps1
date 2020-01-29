@@ -7,14 +7,16 @@ $FolderRedirectionPath = "\\caritas.local\data\Profil\FolderRedirection\$($env:U
 $SignatureFolderRedirectionExist=Test-Path $FolderRedirectionFolder
 if ($SignatureFolderRedirectionExist) {
     # True
-    write-host "$($FolderRedirectionFolder) Exists"
+    Write-Host "Signatures Folder exists"
+
 } else {
     # FalseChanges the LogDirectory to a local Folder 
-    write-host "$($FolderRedirectionFolder) Does not exist creating Folder"
+    Write-Host "Signatures Folder does not exist, copying Folder from AppData"
     Copy-Item -Path $AppDataFolder -Destination $FolderRedirectionPath -Recurse
 }
 
 # 2 Remove Signature Folder in AppData
 Remove-Item -Path $AppDataFolder -Force -Recurse
+
 # 3 Link Folder
 New-Item -ItemType SymbolicLink -Path $AppDataFolder -Value $FolderRedirectionFolder
