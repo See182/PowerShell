@@ -1,7 +1,13 @@
-$AppDataFolder = "C:\Users\$($env:USERNAME)\AppData\Roaming\Microsoft\Signatures\"
+$Share = "\\caritas.local\data\Profil\FolderRedirection\$($env:USERNAME)"
+$Path = "Documents\Outlook-Dateien"
+$Folder = "Signatures"
 
-$FolderRedirectionFolder = "\\caritas.local\data\Profil\FolderRedirection\$($env:USERNAME)\Documents\Outlook-Dateien\Signatures"
-$FolderRedirectionPath = "\\caritas.local\data\Profil\FolderRedirection\$($env:USERNAME)\Documents\Outlook-Dateien\"
+
+## Leave everything as it is
+
+$AppDataFolder = "C:\Users\$($env:USERNAME)\AppData\Roaming\Microsoft\Signatures\"
+$FolderRedirectionPath = "$Share\$Path"
+$FolderRedirectionFolder = "$FolderRedirectionPath\$Folder"
 
 function Test-ReparsePoint([string]$path) {
     $file = Get-Item $path -Force -ea SilentlyContinue
