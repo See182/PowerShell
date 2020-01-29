@@ -32,4 +32,8 @@ if (-Not (Test-ReparsePoint $AppDataFolder)){
     #Write-Host "Linking AppData to FolderRedirection"
     # This is why we need to execute as administrator
     New-Item -ItemType SymbolicLink -Path $AppDataFolder -Value $FolderRedirectionFolder
+
+    #Enable this in case you dont have the newest Powershell 
+    # cmd /c "mklink /D C:\Users\%username%\AppData\Roaming\Microsoft\Signatures PATH\%username%\Documents\Outlook-Dateien\Signatures"
+
 }
