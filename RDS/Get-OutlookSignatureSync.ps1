@@ -30,5 +30,6 @@ if (-Not (Test-ReparsePoint $AppDataFolder)){
     Remove-Item -Path $AppDataFolder -Force -Recurse 
 
     #Write-Host "Linking AppData to FolderRedirection"
+    # This is why we need to execute as administrator
     New-Item -ItemType SymbolicLink -Path $AppDataFolder -Value $FolderRedirectionFolder
 }
