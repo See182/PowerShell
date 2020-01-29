@@ -8,6 +8,14 @@ function Test-ReparsePoint([string]$path) {
     return [bool]($file.Attributes -band [IO.FileAttributes]::ReparsePoint)
   }
 
+# Tests:
+## 1 No Signatures Folders -> error
+## 2 Only Signature Folder in AppData -> Runs
+## 3 Only Signature Folder in FolderRedirection -> Runs but errors in Line 34
+## 4 Two Signature Folders -> Runs and overrides with FolderRedirection
+## 5 AppData Signature is already linked -> Runs
+
+
 # 1 Check if Signature Folder is in FolderRedirection else Copy the Files in the AppData to the FolderRedirection
 if (Test-Path $FolderRedirectionFolder) {
     # True
@@ -20,15 +28,13 @@ if (Test-Path $FolderRedirectionFolder) {
     Copy-Item -Path $AppDataFolder -Destination $FolderRedirectionPath -Recurse
 }
 
-# 2 Remove Signature Folder in AppData
-if (Test-Path $AppDataFolder){
-    # True
-    Write-Host "Removing Signatures Folder in AppData"
-    Remove-Item -Path $AppDataFolder -Force -Recurse 
-}
-
 # 3 Link Folder
 if (-Not (Test-ReparsePoint $AppDataFolder)){
+    Write-Host "Removing Signatures Folder in AppData"
+    Remove-Item -Path $AppDataFolder -Force -Recurse 
+
     Write-Host "Linking AppData to FolderRedirection"
     New-Item -ItemType SymbolicLink -Path $AppDataFolder -Value $FolderRedirectionFolder
+} else {
+    Write-Host "Sigantures Folder already linked"
 }
