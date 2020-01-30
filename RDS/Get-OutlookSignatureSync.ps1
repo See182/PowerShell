@@ -1,5 +1,3 @@
-
-
 $AppDataFolder = "C:\Users\$($env:USERNAME)\AppData\Roaming\Microsoft\Signatures\"
 $FolderRedirectionFolder = "PATH\$($env:USERNAME)\FOLDER"
 
