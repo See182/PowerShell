@@ -1,11 +1,5 @@
-$Share = "\\DOMAIN\data\Profil\FolderRedirection\$($env:USERNAME)"
-$Path = "Documents\Mozilla-Dateien"
-$Folder = "Mozilla"
-
-## Leave everything as it is
 $AppDataFolder = "C:\Users\$($env:USERNAME)\AppData\Roaming\Mozilla\"
-$FolderRedirectionPath = "$Share\$Path"
-$FolderRedirectionFolder = "$FolderRedirectionPath\$Folder"
+$FolderRedirectionFolder = "PATH\$($env:USERNAME)\FOLDER"
 
 function Test-ReparsePoint([string]$path) {
     $file = Get-Item $path -Force -ea SilentlyContinue
@@ -21,7 +15,7 @@ if (-Not (Test-Path $AppDataFolder)){
 # 2 Check if Signature Folder is in FolderRedirection else Copy the Files in the AppData to the FolderRedirection
 if (-Not (Test-Path $FolderRedirectionFolder)) {
     #Write-Host "Signatures Folder does not exist, copying Folder from AppData..."
-    Copy-Item -Path $AppDataFolder -Destination $FolderRedirectionPath -Recurse
+    Copy-Item -Path $AppDataFolder -Destination $FolderRedirectionFolder -Recurse
 }
 
 # 3 Link Folder
@@ -29,11 +23,11 @@ if (-Not (Test-ReparsePoint $AppDataFolder)){
     #Write-Host "Removing Signatures Folder in AppData"
     Remove-Item -Path $AppDataFolder -Force -Recurse 
 
-    #Write-Host "Linking AppData to FolderRedirection"
-    # This is why we need to execute as administrator
+    # This is why we need to execute as administrator you can give Users the access to create symboliclink via AD GPO or local Group Policys
+
+    #Write-Host "Linking AppData to FolderRedirection" Srv 2016
     New-Item -ItemType SymbolicLink -Path $AppDataFolder -Value $FolderRedirectionFolder
 
-    #Enable this in case you dont have the newest Powershell 
-    # cmd /c "mklink /D C:\Users\%username%\AppData\Roaming\Microsoft\Signatures PATH\%username%\Documents\Outlook-Dateien\Signatures"
-
+    #Write-Host "Linking AppData to FolderRedirection"
+    cmd /c "mklink /D C:\Users\%username%\AppData\Roaming\Mozilla PATH\%username%\FOLDER"
 }
