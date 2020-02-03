@@ -19,15 +19,15 @@ if (-Not (Test-Path $FolderRedirectionFolder)) {
 }
 
 # 3 Link Folder
-if (-Not (Test-ReparsePoint $AppDataFolder)){
+if (-Not (Test-ReparsePoint $AppDataFolder)){ 
     #Write-Host "Removing Signatures Folder in AppData"
     Remove-Item -Path $AppDataFolder -Force -Recurse 
 
      # This is why we need to execute as administrator you can give Users the access to create symboliclink via AD GPO or local Group Policys
 
-    #Write-Host "Linking AppData to FolderRedirection" Srv 2016
+    #Write-Host "Linking AppData to FolderRedirection" Powershell 5 and above
     New-Item -ItemType SymbolicLink -Path $AppDataFolder -Value $FolderRedirectionFolder
 
-    #Write-Host "Linking AppData to FolderRedirection" Srv 2012R2
+    #Write-Host "Linking AppData to FolderRedirection" Powershell 4 and under
     cmd /c "mklink /D C:\Users\%username%\AppData\Roaming\Microsoft\Signatures PATH\%username%\FOLDER"
 }
