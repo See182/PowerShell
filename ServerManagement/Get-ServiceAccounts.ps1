@@ -14,18 +14,20 @@
     .NOTES
     
 #>
-#   Variabeln   #
 
+#   Variabeln   #
+$UserAccount = Read-Host "Type in Domain\Username..."
+$LogFolder = "C:\Log"
 $ServerList = Get-Content ".\Servers.txt"
-$OutFilePath = "C:\Service_Account"
+$LogFileDate = Get-Date -Format "ddMMyyy_HH_mm"
 
 #   Script  #
-# Checking if everything is there
-if (Test-Path $OutFilePath) {
-    Write-Host "$OutFilePath is there." -ForegroundColor Green
+
+if (Test-Path $LogFolder) {
+    Write-Host "$LogFolder exists" -ForegroundColor Green
 } else {
-    Write-Host "$OutFilePath is not there, we have to create it..."
-    mkdir $OutFilePath
+    Write-Host "Creating $LogFolder..."
+    mkdir $LogFolder
 }
 
 ForEach ($Server in $ServerList) {
@@ -33,12 +35,15 @@ ForEach ($Server in $ServerList) {
     $Ping = Test-Connection -Quiet -Count 1 -ComputerName $Server
 
     if ($Ping -eq "True") {
-        Write-Host "I $Server bims da" -ForegroundColor Green 
-        Get-WmiObject -Class Win32_Service -ComputerName $Server | Where-Object StartName -NE "LocalSystem" | Where-Object StartName -NE "NT AUTHORITY\LocalService" | Where-Object StartName -NE "NT AUTHORITY\NetworkService" | Where-Object StartName -NE $null |  Select-Object Displayname, Name, Startname | Out-File -Encoding utf8 -FilePath "$OutFilePath\ServiceResult_$Server.txt"
+        Write-Host "$Server is reachable" -ForegroundColor Green
+        Write-Host "Writing Log for $Server" -ForegroundColor Blue -BackgroundColor White
 
-        Write-Host "Creating Log for $Server" -ForegroundColor Blue -BackgroundColor Black
+        Get-WmiObject -Class Win32_Service -ComputerName $Server | 
+        Where-Object StartName -EQ $UserAccount |
+        Select-Object PSComputerName, Displayname, Name | 
+        Out-File -Encoding utf8 -FilePath "$LogFolder\MSService_$LogFileDate.txt" -Append
+
     } else {
-        Write-Host "I $Server bims nicht da :-(" -ForegroundColor Red
+        Write-Host "$Server is not reachable" -ForegroundColor Red
     }
-
 }
