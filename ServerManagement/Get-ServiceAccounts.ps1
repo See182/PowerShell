@@ -22,7 +22,6 @@ $ServerList = Get-Content ".\Servers.txt"
 $LogFileDate = Get-Date -Format "ddMMyyy_HH_mm"
 
 #   Script  #
-
 if (Test-Path $LogFolder) {
     Write-Host "$LogFolder exists" -ForegroundColor Green
 } else {
@@ -31,7 +30,6 @@ if (Test-Path $LogFolder) {
 }
 
 ForEach ($Server in $ServerList) {
-
     $Ping = Test-Connection -Quiet -Count 1 -ComputerName $Server
 
     if ($Ping -eq "True") {
