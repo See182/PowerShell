@@ -4,5 +4,3 @@ netdom query fsmo
 ntdsutil: roles
 fsmo maintenance: connections
 server connections:
-
-

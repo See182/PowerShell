@@ -1,9 +1,9 @@
-$folders = Get-ChildItem \\caritas.local\daten\Ordnerumleitung | 
+$folders = Get-ChildItem \\Ordnerumleitung | 
 	Where { $_.PSIsContainer } | Select -Exp name
 
 $result = @()
 
-$objDomain = New-Object System.DirectoryServices.DirectoryEntry("LDAP://OU=Caritas,DC=caritas,DC=local")
+$objDomain = New-Object System.DirectoryServices.DirectoryEntry("LDAP://OU=Users,DC=domain,DC=local")
  
 $strFilter = "(&(objectCategory=person)(objectClass=user))"
 $objSearcher = New-Object System.DirectoryServices.DirectorySearcher
