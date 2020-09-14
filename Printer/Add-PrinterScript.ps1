@@ -10,16 +10,21 @@
 
     .LINK
     Script is based on script created by Preston Gallwas
-    https://www.atumvirt.com/2013/11/dramatically-reducing-logon-time-to-desktop-by-moving-from-group-policy-preferences-to-powershell-logon-script/ 
+    https://www.atumvirt.com/2013/11/dramatically-reducing-logon-time-to-desktop-by-moving-from-group-policy-preferences-to-powershell-logon-script/ https://www.atumvirt.com/2013/11/dramatically-reducing-logon-time-to-desktop-by-moving-from-group-policy-preferences-to-powershell-logon-script/ 
 
     .NOTES
-    
+    ▄▀▀ ▄▀▄ █▄ █ ▄▀▀ ▄▀▄ ▀█▀   ▄▀▄ ▄▀ 
+    ▀▄▄ ▀▄▀ █ ▀█ ▀▄▄ █▀█  █    █▀█ ▀▄█
+    Author: 
+    Country:
+    Released Date:
+    Gitlab Link: 
 #>
 
 # Variabels
 $GPOGuid = "E64E05A0-8ED7-42A4-98C4-F0447C280EEA"
-$Domain = "CARITAS.local"
-$LogDir="\\FIL02.caritas.local\PrinterLog$"
+$Domain = "DOMAIN.local"
+$LogDir="\\FILESERVER\PrinterLog$"
 $LogPath="$($LogDir)\$($env:USERNAME)_$($env:COMPUTERNAME)_PrinterScript.log"
 
 # Check to see if the log directory exists.
