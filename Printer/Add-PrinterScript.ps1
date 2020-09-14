@@ -1,12 +1,12 @@
 <#
     .SYNOPSIS
-    Connects Printer via Powershell based with a GPO.
+    Connects printer via PowerShell based on a GPO. Replaces the deployment of printers via GPOs.
 
     .DESCRIPTION
-    This Scripts gathers the information from a GPO and connects the Printer via Powershell.
+    This Scripts gathers the information from a GPO and connects the Printer via Powershell. Can be used during logon.
 
-    .EXAMPLE
-    Create a GPO with printers installed under User -> Policy -> Control Panel Settings -> Printer
+    .COMPONENT
+    Create a GPO with printers installed under User -> Policy -> Control Panel Settings -> Printer. Script uses the created XML file to gather its needed information.
 
     .LINK
     Script is based on script created by Preston Gallwas
@@ -15,10 +15,10 @@
     .NOTES
     ▄▀▀ ▄▀▄ █▄ █ ▄▀▀ ▄▀▄ ▀█▀   ▄▀▄ ▄▀ 
     ▀▄▄ ▀▄▀ █ ▀█ ▀▄▄ █▀█  █    █▀█ ▀▄█
-    Author: 
-    Country:
-    Released Date:
-    Gitlab Link: 
+    Author: Steve Kirby
+    Country: Germany
+    Released Date (DD/MM/YYYY): 14/09/2020
+    Gitlab Link:
 #>
 
 # Variabels

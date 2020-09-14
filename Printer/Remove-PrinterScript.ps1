@@ -1,17 +1,22 @@
-#--------------------------------------------------------------------------------- 
-#The sample scripts are not supported under any Microsoft standard support 
-#program or service. The sample scripts are provided AS IS without warranty  
-#of any kind. Microsoft further disclaims all implied warranties including,  
-#without limitation, any implied warranties of merchantability or of fitness for 
-#a particular purpose. The entire risk arising out of the use or performance of  
-#the sample scripts and documentation remains with you. In no event shall 
-#Microsoft, its authors, or anyone else involved in the creation, production, or 
-#delivery of the scripts be liable for any damages whatsoever (including, 
-#without limitation, damages for loss of business profits, business interruption, 
-#loss of business information, or other pecuniary loss) arising out of the use 
-#of or inability to use the sample scripts or documentation, even if Microsoft 
-#has been advised of the possibility of such damages 
-#--------------------------------------------------------------------------------- 
+<#
+    .SYNOPSIS
+    Remove all network printers
+
+    .DESCRIPTION
+    This Scripts removes all network printers installed on the executed computer.
+
+	.LINK
+	Script is based on a script created by Reddit User DrivenDemon
+	https://www.reddit.com/r/PowerShell/comments/8klbc3/delete_local_printers_from_remote_computers/
+
+    .NOTES
+    ▄▀▀ ▄▀▄ █▄ █ ▄▀▀ ▄▀▄ ▀█▀   ▄▀▄ ▄▀ 
+    ▀▄▄ ▀▄▀ █ ▀█ ▀▄▄ █▀█  █    █▀█ ▀▄█
+    Author: Steve Kirby
+    Country: Germany
+    Released Date (DD/MM/YYYY): 14/09/2020
+    Gitlab Link:
+#>
 
 #requires -Version 2.0
 Function Remove-OSCNetworkPrinters
