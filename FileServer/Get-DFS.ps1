@@ -10,13 +10,14 @@
 
     .LINK
     Script is based on script created by Preston Gallwas
-    https://www.atumvirt.com/2013/11/dramatically-reducing-logon-time-to-desktop-by-moving-from-group-policy-preferences-to-powershell-logon-script/ 
+    https://www.atumvirt.com/2013/11/dramatically-reducing-logon-time-to-desktop-by-moving-from-group-policy-preferences-to-powershell-logon-script/
 
     .NOTES
-    
+
 #>
 
 #Variabel
 $Domain = Read-Host -Prompt 'Domain'
 
 
+Get-AD
