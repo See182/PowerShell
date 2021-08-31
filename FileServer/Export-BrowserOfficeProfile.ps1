@@ -77,12 +77,13 @@ Write-Host "Are we using Edge?"
 if (Test-Path $EdgeProfile) {
     Write-Host "We are using Edge"
     if (-Not (Test-Path "$($ServerPath)\$($EdgeFolder)\")) {
-        #Write-Host "No Edge Folder in Server Path, I'll create one..."
+        Write-Host "No Edge Folder in Server Path, I'll create one..."
         New-Item -ItemType Directory -Path "$($ServerPath)\$($EdgeFolder)\"
     }
     Copy-Item -Path "$EdgeProfile\Bookmarks" -Destination "$($ServerPath)\$($EdgeFolder)\" -Force
     Copy-Item -Path "$EdgeProfile\History" -Destination "$($ServerPath)\$($EdgeFolder)\" -Force
     Copy-Item -Path "$EdgeProfile\Favicons" -Destination "$($ServerPath)\$($EdgeFolder)\" -Force
+    Copy-Item -Path "$EdgeProfile\Preferences" -Destination "$($ServerPath)\$($EdgeFolder)\" -Force
 }
 else {
     Write-Host "We are not using Edge"
@@ -98,12 +99,13 @@ Write-Host "Are we using Chrome?"
 if (Test-Path $ChromeProfile) {
     Write-Host "We are using Chrome"
     if (-Not (Test-Path "$($ServerPath)\$($ChromeFolder)")) {
-        #Write-Host "No Edge Folder in Server Path, I'll create one..."
+        Write-Host "No Chrome Folder in Server Path, I'll create one..."
         New-Item -ItemType Directory -Path "$($ServerPath)\$($ChromeFolder)"
     }
     Copy-Item -Path "$ChromeProfile\Bookmarks" -Destination "$($ServerPath)\$($ChromeFolder)" -Force
     Copy-Item -Path "$ChromeProfile\History" -Destination "$($ServerPath)\$($ChromeFolder)" -Force
     Copy-Item -Path "$ChromeProfile\Favicons" -Destination "$($ServerPath)\$($ChromeFolder)" -Force
+    Copy-Item -Path "$ChromeProfile\Preferences" -Destination "$($ServerPath)\$($ChromeFolder)" -Force
 }
 else {
     Write-Host "We are not using Chrome"

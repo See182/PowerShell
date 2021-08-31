@@ -62,10 +62,10 @@ $InternetExplorerFavoritesLocalPath = "C:\Users\$($env:USERNAME)\Favorites\"
 $InternetExplorerHistoryLocalPath = "C:\Users\$($env:USERNAME)\AppData\Local\Microsoft\Windows\History"
 
 <###~~~~~~~~Script                           ~~~~~~~~###>
-# Copy Internet Explorer Favorites to the ServerPath
+# Copy Internet Explorer Favorites to the local Computer
 Robocopy.exe "$($ServerPath)\$($InternetExplorerFolder)\$($InternetExplorerFavorites)" "$InternetExplorerFavoritesLocalPath" /MIR /NFL /NDL /NJH /NJS /nc /ns /np
 
-# Copy Internet Explorer History to the ServerPath
+# Copy Internet Explorer History to the local Computer
 Robocopy.exe "$($ServerPath)\$($InternetExplorerFolder)\$($InternetExplorerHistory)" "$InternetExplorerHistoryLocalPath" /MIR /NFL /NDL /NJH /NJS /nc /ns /np
 
 
@@ -77,9 +77,14 @@ $EdgeProfile = "C:\Users\$($env:USERNAME)\AppData\Local\Microsoft\Edge\User Data
 Write-Host "Is a Edge Folder there?"
 if (Test-Path "$($ServerPath)\$($EdgeFolder)") {
     Write-Host "Copy Edge Profile"
+    # Copy Edge Bookmarks to the local Computer
     Copy-Item -Destination  "$EdgeProfile\" -Path "$($ServerPath)\$($EdgeFolder)\Bookmarks" -Force
+    # Copy Edge History to the local Computer
     Copy-Item -Destination  "$EdgeProfile\" -Path "$($ServerPath)\$($EdgeFolder)\History" -Force
+    # Copy Edge FavIcons to the local Computer
     Copy-Item -Destination  "$EdgeProfile\" -Path "$($ServerPath)\$($EdgeFolder)\Favicons" -Force
+    # Copy Edge Settings to the local Computer
+    Copy-Item -Destination  "$EdgeProfile\" -Path "$($ServerPath)\$($EdgeFolder)\Preferences" -Force
 }
 else {
     Write-Host "We are not using Edge"
@@ -94,9 +99,14 @@ $ChromeProfile = "C:\Users\$($env:USERNAME)\AppData\Local\Google\Chrome\User Dat
 Write-Host "Is a Chrome Folder there?"
 if (Test-Path "$($ServerPath)\$($ChromeFolder)") {
     Write-Host "Copy Chrome Profile"
+    # Copy Chrome Bookmarks to the local Computer
     Copy-Item -Destination  "$ChromeProfile\" -Path "$($ServerPath)\$($ChromeFolder)\Bookmarks" -Force
+    # Copy Chrome History to the local Computer
     Copy-Item -Destination  "$ChromeProfile\" -Path "$($ServerPath)\$($ChromeFolder)\History" -Force
+    # Copy Chrome FavIcons to the local Computer
     Copy-Item -Destination  "$ChromeProfile\" -Path "$($ServerPath)\$($ChromeFolder)\Favicons" -Force
+    # Copy Chrome Settings to the local Computer
+    Copy-Item -Destination  "$ChromeProfile\" -Path "$($ServerPath)\$($ChromeFolder)\Preferences" -Force
 }
 else {
     Write-Host "We are not using Chrome"
@@ -111,6 +121,7 @@ $FireFoxProfile = "C:\Users\$($env:USERNAME)\AppData\Roaming\Mozilla\Firefox"
 Write-Host "Is a Firefox Folder there?"
 if (Test-Path "$($ServerPath)\$($FirefoxFolder)") {
     Write-Host "Copy Firefox Profile"
+    # Copy FireFox Profile to the local Computer
     Robocopy.exe "$($ServerPath)\$($FirefoxFolder)" "$FireFoxProfile" /MIR /NFL /NDL /NJH /NJS /nc /ns /np
 }
 else {
@@ -127,16 +138,19 @@ $OutlookPath = "C:\Users\$($env:USERNAME)\AppData\Local\Microsoft\Office"
 Write-Host "Is a Office Folder there?"
 if (Test-Path "$($ServerPath)\$($OfficeFolder)") {
     Write-Host "Copy Office Files"
+    # Copy Outlook Signatures to the local Computer
     Robocopy.exe "$($ServerPath)\$($OfficeFolder)\$($OutlookSignatures)" "$($OutlookProfile)\Signatures\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np
+    # Copy Outlook Dictionary to the local Computer
     Robocopy.exe "$($ServerPath)\$($OfficeFolder)\$($OutlookDictionary)" "$($OutlookProfile)\UProof\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np
+    # Copy Outlook Templates to the local Computer
     Robocopy.exe "$($ServerPath)\$($OfficeFolder)\$($OutlookTemplates)"  "$($OutlookProfile)\Templates\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np
-
+    # Copy Outlook CorrectionLists to the local Computer
     Copy-Item -Destination "$($OutlookProfile)\Office\" -Path "$($ServerPath)\$($OfficeFolder)\$($OutlookAutoCorrectionLists)\*.acl" -Force
-
+    # Copy Outlook Rules to the local Computer
     Copy-Item -Destination "$($OutlookPath)\16.0\" -Path "$($ServerPath)\$($OfficeFolder)\$($OutlookRulesXML)\outlook.exe_Rules.xml" -Force
-
+    # Copy Outlook Settings to the local Computer
     Copy-Item -Destination "$($OutlookPath)" -Path "$($ServerPath)\$($OfficeFolder)\$($OutlookOfficeUI)\*.officeUI" -Force
-
+    # Import Office and Outlook Settings to the local Computer
     reg.exe IMPORT "$($ServerPath)\$($OfficeFolder)\OutlookProfiles.reg"
     reg.exe IMPORT "$($ServerPath)\$($OfficeFolder)\OfficeSettings.reg"
 
