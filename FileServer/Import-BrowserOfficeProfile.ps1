@@ -1,0 +1,145 @@
+<#
+    .SYNOPSIS
+    Synchronize Microsoft Internet Explorer/Edge, Google Chrome, Mozilla Firefox and Office 365 Settings and Profiles.
+
+    .DESCRIPTION
+    Synchronizes all Settings and Profiles from local drive to a network drive. Apps included are Microsoft Internet Explorer/Edge, Google Chrome, Mozilla Firefox and Office 365. Local Computer <-- Server
+
+    .NOTES
+    ▄▀▀ ▄▀▄ █▄ █ ▄▀▀ ▄▀▄ ▀█▀   ▄▀▄ ▄▀
+    ▀▄▄ ▀▄▀ █ ▀█ ▀▄▄ █▀█  █    █▀█ ▀▄█
+    Author: Steve Kirby
+    Country: Germany
+    Released Date (DD/MM/YYYY): 30/08/2021
+    Tested with:    Microsoft Windows 10 Enterprise 20H2 Build
+                    Microsoft Internet Explorer 11
+                    Microsoft Edge 92.0.902.84 (64-Bit)
+                    Microsoft Office 365 Apps for Enterprise Version 2107
+                    Google Chrome 92.0.4515.159 (64-Bit)
+                    Mozilla Firefox 91.0.2 (64-Bit)
+
+#>
+
+<#~~~~~~~~~~Variables                        ~~~~~~~~~~#>
+#$ServerPath = "\\hh.hansemerkur.de\global\Benutzer\Einstellung\%USERNAME%"
+$ServerPath = "C:\Profile"
+# Mainfolders
+$InternetExplorerFolder = "IE"
+$EdgeFolder = "Edge"
+$ChromeFolder = "Chrome"
+$FirefoxFolder = "Firefox"
+$OfficeFolder = "Office"
+
+# Subfolders
+$InternetExplorerFavorites = "Favorites"
+$InternetExplorerHistory = "History"
+
+$OutlookSignatures = "Signatures"
+$OutlookDictionary = "Dictionary"
+$OutlookTemplates = "Templates"
+$OutlookAutoCorrectionLists = "AutoCorrectionLists"
+$OutlookRulesXML = "RulesXML"
+$OutlookOfficeUI = "OfficeUI"
+
+<#~~~~~~~~~~Do not Edit                      ~~~~~~~~~~#>
+<#~~~~~~~~~~ServerPath Check                 ~~~~~~~~~~#>
+# Check to see if the Server Path directory exists.
+Write-Host "Checking Server Path Variable: $($ServerPath)"
+$ServerPathTest = Test-Path $ServerPath
+if ($ServerPathTest) {
+    Write-Host "$($ServerPath) exists"
+}
+else {
+    Write-Warning "$($ServerPath) does not exist. Check the network or the variabel on line 24."
+    Exit
+}
+
+
+<##~~~~~~~~~Microsoft Internet Explorer      ~~~~~~~~~##>
+<###~~~~~~~~Variables                        ~~~~~~~~###>
+$InternetExplorerFavoritesLocalPath = "C:\Users\$($env:USERNAME)\Favorites\"
+$InternetExplorerHistoryLocalPath = "C:\Users\$($env:USERNAME)\AppData\Local\Microsoft\Windows\History"
+
+<###~~~~~~~~Script                           ~~~~~~~~###>
+# Copy Internet Explorer Favorites to the ServerPath
+Robocopy.exe "$($ServerPath)\$($InternetExplorerFolder)\$($InternetExplorerFavorites)" "$InternetExplorerFavoritesLocalPath" /MIR /NFL /NDL /NJH /NJS /nc /ns /np
+
+# Copy Internet Explorer History to the ServerPath
+Robocopy.exe "$($ServerPath)\$($InternetExplorerFolder)\$($InternetExplorerHistory)" "$InternetExplorerHistoryLocalPath" /MIR /NFL /NDL /NJH /NJS /nc /ns /np
+
+
+<##~~~~~~~~~Microsoft Edge                   ~~~~~~~~~##>
+<###~~~~~~~~Variables                        ~~~~~~~~###>
+$EdgeProfile = "C:\Users\$($env:USERNAME)\AppData\Local\Microsoft\Edge\User Data\Default"
+
+<###~~~~~~~~Script                           ~~~~~~~~###>
+Write-Host "Is a Edge Folder there?"
+if (Test-Path $($ServerPath)\$($EdgeFolder)\) {
+    Write-Host "Copy Edge Profile"
+    Copy-Item -Destination  "$EdgeProfile\Bookmarks" -Path "$($ServerPath)\$($EdgeFolder)\" -Force
+    Copy-Item -Destination  "$EdgeProfile\History" -Path"$($ServerPath)\$($EdgeFolder)\" -Force
+    Copy-Item --Destination  "$EdgeProfile\Favicons" -Path "$($ServerPath)\$($EdgeFolder)\" -Force
+}
+else {
+    Write-Host "We are not using Edge"
+}
+
+
+<##~~~~~~~~~Google Chrome                    ~~~~~~~~~##>
+<###~~~~~~~~Variables                        ~~~~~~~~###>
+$ChromeProfile = "C:\Users\$($env:USERNAME)\AppData\Local\Google\Chrome\User Data\Default"
+
+<###~~~~~~~~Script                           ~~~~~~~~###>
+Write-Host "Is a Chrome Folder there?"
+if (Test-Path $($ServerPath)\$($ChromeFolder)\) {
+    Write-Host "Copy Chrome Profile"
+    Copy-Item -Destination  "$ChromeProfile\Bookmarks" -Path "$($ServerPath)\$($ChromeFolder)\" -Force
+    Copy-Item -Destination  "$ChromeProfile\History" -Path"$($ServerPath)\$($ChromeFolder)\" -Force
+    Copy-Item --Destination  "$ChromeProfile\Favicons" -Path "$($ServerPath)\$($ChromeFolder)\" -Force
+}
+else {
+    Write-Host "We are not using Chrome"
+}
+
+
+<##~~~~~~~~~Mozilla Firefox                  ~~~~~~~~~##>
+<###~~~~~~~~Variables                        ~~~~~~~~###>
+$FireFoxProfile = "C:\Users\$($env:USERNAME)\AppData\Roaming\Mozilla\Firefox"
+
+<###~~~~~~~~Script                           ~~~~~~~~###>
+Write-Host "Is a Firefox Folder there?"
+if (Test-Path "$($ServerPath)\$($FirefoxFolder)") {
+    Write-Host "Copy Firefox Profile"
+    Robocopy.exe "$($ServerPath)\$($FirefoxFolder)" "$FireFoxProfile" /MIR /NFL /NDL /NJH /NJS /nc /ns /np
+}
+else {
+    Write-Host "We are not using Firefox"
+}
+
+
+<##~~~~~~~~~Office & Outlook                 ~~~~~~~~~##>
+<###~~~~~~~~Variables                        ~~~~~~~~###>
+$OutlookProfile = "C:\Users\$($env:USERNAME)\AppData\Roaming\Microsoft"
+$OutlookPath = "C:\Users\$($env:USERNAME)\AppData\Local\Microsoft\Office"
+
+<###~~~~~~~~Script                           ~~~~~~~~###>
+Write-Host "Is a Office Folder there?"
+if (Test-Path "$($ServerPath)\$($OfficeFolder)") {
+    Write-Host "Copy Office Files"
+    Robocopy.exe "$($ServerPath)\$($OfficeFolder)\$($OutlookSignatures)" "$($OutlookProfile)\Signatures\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np
+    Robocopy.exe "$($ServerPath)\$($OfficeFolder)\$($OutlookDictionary)" "$($OutlookProfile)\UProof\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np
+    Robocopy.exe "$($ServerPath)\$($OfficeFolder)\$($OutlookTemplates)"  "$($OutlookProfile)\Templates\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np
+
+    Copy-Item -Destination "$($OutlookProfile)\Office\*.acl" -Path "$($ServerPath)\$($OfficeFolder)\$($OutlookAutoCorrectionLists)\" -Recurse
+
+    Copy-Item -Destination "$($OutlookPath)\16.0\outlook.exe_Rules.xml" -Path "$($ServerPath)\$($OfficeFolder)\$($OutlookRulesXML)\" -Recurse
+
+    Copy-Item -Destination "$($OutlookPath)\*.officeUI" -Path "$($ServerPath)\$($OfficeFolder)\$($OutlookOfficeUI)\" -Recurse
+
+    reg.exe IMPORT "$($ServerPath)\$($OfficeFolder)\OutlookProfiles.reg"
+    reg.exe IMPORT "$($ServerPath)\$($OfficeFolder)\OfficeSettings.reg"
+
+}
+else {
+    Write-Host "We are not using Office"
+}
