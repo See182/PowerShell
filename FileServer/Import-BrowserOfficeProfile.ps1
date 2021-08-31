@@ -11,7 +11,8 @@
     Author: Steve Kirby
     Country: Germany
     Released Date (DD/MM/YYYY): 30/08/2021
-    Tested with:    Microsoft Windows 10 Enterprise 20H2 Build
+    Tested with:    Test User was an Administrator
+                    Microsoft Windows 10 Enterprise 20H2 Build
                     Microsoft Internet Explorer 11
                     Microsoft Edge 92.0.902.84 (64-Bit)
                     Microsoft Office 365 Apps for Enterprise Version 2107
@@ -21,8 +22,8 @@
 #>
 
 <#~~~~~~~~~~Variables                        ~~~~~~~~~~#>
-#$ServerPath = "\\hh.hansemerkur.de\global\Benutzer\Einstellung\%USERNAME%"
-$ServerPath = "C:\Profile"
+$ServerPath = "\\hh.hansemerkur.de\global\Benutzer\Einstellung\%USERNAME%"
+
 # Mainfolders
 $InternetExplorerFolder = "IE"
 $EdgeFolder = "Edge"
@@ -74,11 +75,11 @@ $EdgeProfile = "C:\Users\$($env:USERNAME)\AppData\Local\Microsoft\Edge\User Data
 
 <###~~~~~~~~Script                           ~~~~~~~~###>
 Write-Host "Is a Edge Folder there?"
-if (Test-Path $($ServerPath)\$($EdgeFolder)\) {
+if (Test-Path "$($ServerPath)\$($EdgeFolder)") {
     Write-Host "Copy Edge Profile"
-    Copy-Item -Destination  "$EdgeProfile\Bookmarks" -Path "$($ServerPath)\$($EdgeFolder)\" -Force
-    Copy-Item -Destination  "$EdgeProfile\History" -Path"$($ServerPath)\$($EdgeFolder)\" -Force
-    Copy-Item --Destination  "$EdgeProfile\Favicons" -Path "$($ServerPath)\$($EdgeFolder)\" -Force
+    Copy-Item -Destination  "$EdgeProfile\" -Path "$($ServerPath)\$($EdgeFolder)\Bookmarks" -Force
+    Copy-Item -Destination  "$EdgeProfile\" -Path "$($ServerPath)\$($EdgeFolder)\History" -Force
+    Copy-Item -Destination  "$EdgeProfile\" -Path "$($ServerPath)\$($EdgeFolder)\Favicons" -Force
 }
 else {
     Write-Host "We are not using Edge"
@@ -91,11 +92,11 @@ $ChromeProfile = "C:\Users\$($env:USERNAME)\AppData\Local\Google\Chrome\User Dat
 
 <###~~~~~~~~Script                           ~~~~~~~~###>
 Write-Host "Is a Chrome Folder there?"
-if (Test-Path $($ServerPath)\$($ChromeFolder)\) {
+if (Test-Path "$($ServerPath)\$($ChromeFolder)") {
     Write-Host "Copy Chrome Profile"
-    Copy-Item -Destination  "$ChromeProfile\Bookmarks" -Path "$($ServerPath)\$($ChromeFolder)\" -Force
-    Copy-Item -Destination  "$ChromeProfile\History" -Path"$($ServerPath)\$($ChromeFolder)\" -Force
-    Copy-Item --Destination  "$ChromeProfile\Favicons" -Path "$($ServerPath)\$($ChromeFolder)\" -Force
+    Copy-Item -Destination  "$ChromeProfile\" -Path "$($ServerPath)\$($ChromeFolder)\Bookmarks" -Force
+    Copy-Item -Destination  "$ChromeProfile\" -Path "$($ServerPath)\$($ChromeFolder)\History" -Force
+    Copy-Item -Destination  "$ChromeProfile\" -Path "$($ServerPath)\$($ChromeFolder)\Favicons" -Force
 }
 else {
     Write-Host "We are not using Chrome"
@@ -130,11 +131,11 @@ if (Test-Path "$($ServerPath)\$($OfficeFolder)") {
     Robocopy.exe "$($ServerPath)\$($OfficeFolder)\$($OutlookDictionary)" "$($OutlookProfile)\UProof\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np
     Robocopy.exe "$($ServerPath)\$($OfficeFolder)\$($OutlookTemplates)"  "$($OutlookProfile)\Templates\" /MIR /NFL /NDL /NJH /NJS /nc /ns /np
 
-    Copy-Item -Destination "$($OutlookProfile)\Office\*.acl" -Path "$($ServerPath)\$($OfficeFolder)\$($OutlookAutoCorrectionLists)\" -Recurse
+    Copy-Item -Destination "$($OutlookProfile)\Office\" -Path "$($ServerPath)\$($OfficeFolder)\$($OutlookAutoCorrectionLists)\*.acl" -Force
 
-    Copy-Item -Destination "$($OutlookPath)\16.0\outlook.exe_Rules.xml" -Path "$($ServerPath)\$($OfficeFolder)\$($OutlookRulesXML)\" -Recurse
+    Copy-Item -Destination "$($OutlookPath)\16.0\" -Path "$($ServerPath)\$($OfficeFolder)\$($OutlookRulesXML)\outlook.exe_Rules.xml" -Force
 
-    Copy-Item -Destination "$($OutlookPath)\*.officeUI" -Path "$($ServerPath)\$($OfficeFolder)\$($OutlookOfficeUI)\" -Recurse
+    Copy-Item -Destination "$($OutlookPath)" -Path "$($ServerPath)\$($OfficeFolder)\$($OutlookOfficeUI)\*.officeUI" -Force
 
     reg.exe IMPORT "$($ServerPath)\$($OfficeFolder)\OutlookProfiles.reg"
     reg.exe IMPORT "$($ServerPath)\$($OfficeFolder)\OfficeSettings.reg"

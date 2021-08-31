@@ -11,7 +11,8 @@
     Author: Steve Kirby
     Country: Germany
     Released Date (DD/MM/YYYY): 30/08/2021
-    Tested with:    Microsoft Windows 10 Enterprise 20H2 Build
+    Tested with:    Test User was an Administrator
+                    Microsoft Windows 10 Enterprise 20H2 Build
                     Microsoft Internet Explorer 11
                     Microsoft Edge 92.0.902.84 (64-Bit)
                     Microsoft Office 365 Apps for Enterprise Version 2107

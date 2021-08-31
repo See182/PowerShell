@@ -21,8 +21,8 @@
 #>
 
 <#~~~~~~~~~~Variables                        ~~~~~~~~~~#>
-#$ServerPath = "\\hh.hansemerkur.de\global\Benutzer\Einstellung\%USERNAME%"
-$ServerPath = "C:\Profile"
+$ServerPath = "\\hh.hansemerkur.de\global\Benutzer\Einstellung\%USERNAME%"
+
 # Mainfolders
 $InternetExplorerFolder = "IE"
 $EdgeFolder = "Edge"
@@ -142,19 +142,19 @@ if (Test-Path $OutlookProfile) {
         Write-Host "No Outlook Auto Corrections Lists Folder in Server Path, I'll create one..."
         New-Item -ItemType Directory -Path "$($ServerPath)\$($OfficeFolder)\$($OutlookAutoCorrectionLists)\"
     }
-    Copy-Item -Path "$($OutlookProfile)\Office\*.acl" -Destination "$($ServerPath)\$($OfficeFolder)\$($OutlookAutoCorrectionLists)\" -Recurse
+    Copy-Item -Path "$($OutlookProfile)\Office\*.acl" -Destination "$($ServerPath)\$($OfficeFolder)\$($OutlookAutoCorrectionLists)\" -Force
 
     if (-Not (Test-Path "$($ServerPath)\$($OfficeFolder)\$($OutlookRulesXML)\")) {
         Write-Host "No Outlook Rules XML Folder in Server Path, I'll create one..."
         New-Item -ItemType Directory -Path "$($ServerPath)\$($OfficeFolder)\$($OutlookRulesXML)\"
     }
-    Copy-Item -Path "$($OutlookPath)\16.0\outlook.exe_Rules.xml" -Destination "$($ServerPath)\$($OfficeFolder)\$($OutlookRulesXML)\" -Recurse
+    Copy-Item -Path "$($OutlookPath)\16.0\outlook.exe_Rules.xml" -Destination "$($ServerPath)\$($OfficeFolder)\$($OutlookRulesXML)\" -Force
 
     if (-Not (Test-Path "$($ServerPath)\$($OfficeFolder)\$($OutlookOfficeUI)\")) {
         Write-Host "No Office UI Folder in Server Path, I'll create one..."
         New-Item -ItemType Directory -Path "$($ServerPath)\$($OfficeFolder)\$($OutlookOfficeUI)\"
     }
-    Copy-Item -Path "$($OutlookPath)\*.officeUI" -Destination "$($ServerPath)\$($OfficeFolder)\$($OutlookOfficeUI)\" -Recurse
+    Copy-Item -Path "$($OutlookPath)\*.officeUI" -Destination "$($ServerPath)\$($OfficeFolder)\$($OutlookOfficeUI)\" -Force
 
     reg.exe EXPORT "HKEY_CURRENT_USER\Software\Microsoft\Office\16.0\Outlook\Profiles" "$($ServerPath)\$($OfficeFolder)\OutlookProfiles.reg" /Y
     reg.exe EXPORT "HKEY_CURRENT_USER\Software\Microsoft\Office\" "$($ServerPath)\$($OfficeFolder)\OfficeSettings.reg" /Y
