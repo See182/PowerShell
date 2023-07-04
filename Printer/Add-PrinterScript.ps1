@@ -22,9 +22,9 @@
 #>
 
 # Variabels
-$GPOGuid = "E64E05A0-8ED7-42A4-98C4-F0447C280EEA"
-$Domain = "DOMAIN.local"
-$LogDir="\\FILESERVER\PrinterLog$"
+$GPOGuid = "13FA32A4-E36C-472B-8851-EC03E367AD11"
+$Domain = "lappen.local"
+$LogDir="\\bubspkavdmgmtstvm.file.core.windows.net\printerlogs"
 $LogPath="$($LogDir)\$($env:USERNAME)_$($env:COMPUTERNAME)_PrinterScript.log"
 
 # Check to see if the log directory exists.

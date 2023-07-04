@@ -15,3 +15,4 @@ RMDIR /s /q %%G
 
 REM Delete Text Files
 DEL C:\CleanerScript\Clean.txt
+RMDIR C:\CleanerScript
